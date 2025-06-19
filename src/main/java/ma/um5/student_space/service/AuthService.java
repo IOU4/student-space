@@ -9,11 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ma.um5.student_space.domain.Student;
 import ma.um5.student_space.domain.User;
 import ma.um5.student_space.model.AuthResponseDTO;
+import ma.um5.student_space.model.StudentDTO;
 import ma.um5.student_space.model.StudentLoginDTO;
+import ma.um5.student_space.model.TeacherDTO;
 import ma.um5.student_space.model.TeacherLoginDTO;
-import ma.um5.student_space.model.UserDTO;
 import ma.um5.student_space.repos.StudentRepository;
+import ma.um5.student_space.repos.TeacherRepository;
 import ma.um5.student_space.repos.UserRepository;
+import ma.um5.student_space.domain.Teacher;
 
 @Service
 public class AuthService {
@@ -22,12 +25,18 @@ public class AuthService {
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final JwtService jwtService;
+    private final StudentService studentService;
+    private final TeacherService teacherService;
+    private final TeacherRepository teacherRepository;
 
-    public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository, StudentRepository studentRepository, JwtService jwtService) {
+    public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository, StudentRepository studentRepository, JwtService jwtService, StudentService studentService, TeacherService teacherService, TeacherRepository teacherRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
         this.jwtService = jwtService;
+        this.studentService = studentService;
+        this.teacherService = teacherService;
+        this.teacherRepository = teacherRepository;
     }
 
     /**
@@ -43,10 +52,11 @@ public class AuthService {
         User user = student.getUser();
         String token = jwtService.generateToken(user);
 
-        // Map the User entity to a UserDTO
-        UserDTO userDTO = new UserDTO();
+        StudentDTO studentDTO = studentService.findAll().stream()
+            .filter(s -> s.getApogeeNumber().equals(student.getApogeeNumber()))
+            .findFirst().orElse(null);
 
-        return new AuthResponseDTO(token, userDTO);
+        return new AuthResponseDTO(token, studentDTO, null);
     }
 
     /**
@@ -63,11 +73,12 @@ public class AuthService {
 
         String token = jwtService.generateToken(user);
 
-        // Map the User entity to a UserDTO.
-        // You might need to fetch the related Teacher entity to get the name.
-        UserDTO userDTO = new UserDTO();
+        Teacher teacher = teacherRepository.findFirstByUser(user);
+        TeacherDTO teacherDTO = teacher != null ? teacherService.findAll().stream()
+            .filter(t -> t.getFirstName().equals(teacher.getFirstName()))
+            .findFirst().orElse(null) : null;
 
-        return new AuthResponseDTO(token, userDTO);
+        return new AuthResponseDTO(token, null, teacherDTO);
     }
 }
 

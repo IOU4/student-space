@@ -1,0 +1,13 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@studentModuleEnrollment.edit.headline">Edit Student Module Enrollment</h1>
+    <div>
+        <a routerLink="/studentModuleEnrollments" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@studentModuleEnrollment.edit.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="editForm" (ngSubmit)="handleSubmit()">
+    <app-input-row [group]="editForm" field="id" rowType="number" i18n-label="@@studentModuleEnrollment.id.label" label="Id" />
+    <app-input-row [group]="editForm" field="enrollmentDate" rowType="datepicker" i18n-label="@@studentModuleEnrollment.enrollmentDate.label" label="Enrollment Date" />
+    <app-input-row [group]="editForm" field="studentUser" rowType="select" [options]="studentUserValues" i18n-label="@@studentModuleEnrollment.studentUser.label" label="Student User" />
+    <app-input-row [group]="editForm" field="modulee" rowType="select" [options]="moduleeValues" i18n-label="@@studentModuleEnrollment.modulee.label" label="Modulee" />
+    <input type="submit" i18n-value="@@studentModuleEnrollment.edit.headline" value="Edit Student Module Enrollment" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+</form>

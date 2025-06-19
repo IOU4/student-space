@@ -1,0 +1,114 @@
+<!-- login.component.html -->
+<div class="flex justify-center items-center min-h-screen bg-gray-50">
+  <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div class="text-center">
+      <h1 class="text-3xl md:text-4xl font-medium mb-2" i18n="@@login.headline"> StudentSpace </h1>
+      <p class="text-gray-600" i18n="@@login.subheadline">
+        Sign in to access your dashboard
+      </p>
+    </div>
+
+    <!-- Tabs for Student/Teacher -->
+    <div class="flex border-b border-gray-200">
+      <button
+        (click)="setActiveTab('student')"
+        [ngClass]="{
+          'border-blue-600 text-blue-600': activeTab === 'student',
+          'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300':
+            activeTab !== 'student'
+        }"
+        class="flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm focus:outline-none transition"
+        i18n="@@login.tab.student"
+      >
+        Student
+      </button>
+      <button
+        (click)="setActiveTab('teacher')"
+        [ngClass]="{
+          'border-blue-600 text-blue-600': activeTab === 'teacher',
+          'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300':
+            activeTab !== 'teacher'
+        }"
+        class="flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm focus:outline-none transition"
+        i18n="@@login.tab.teacher"
+      >
+        Teacher
+      </button>
+    </div>
+
+    <!-- Student Login Form -->
+    <div *ngIf="activeTab === 'student'">
+      <form [formGroup]="studentLoginForm" (ngSubmit)="handleStudentSubmit()" class="space-y-6">
+        <div>
+          <label for="apogeeNumber" class="block text-sm font-medium text-gray-700" i18n="@@login.student.apogee.label">
+            APOGEE Number
+          </label>
+          <div class="mt-1">
+            <input
+              id="apogeeNumber"
+              formControlName="apogeeNumber"
+              type="text"
+              class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              [ngClass]="{ 'border-red-500': studentLoginForm.get('apogeeNumber')?.invalid && studentLoginForm.get('apogeeNumber')?.touched }"
+            />
+          </div>
+          <div *ngIf="studentLoginForm.get('apogeeNumber')?.invalid && studentLoginForm.get('apogeeNumber')?.touched" class="mt-1 text-sm text-red-600">
+            <span *ngIf="studentLoginForm.get('apogeeNumber')?.errors?.['required']" i18n>APOGEE number is required.</span>
+          </div>
+        </div>
+        <input
+          type="submit"
+          i18n-value="@@login.button"
+          value="Login"
+          class="w-full mt-6 inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded-md px-5 py-2.5 text-center font-semibold"
+        />
+      </form>
+    </div>
+
+    <!-- Teacher Login Form -->
+    <div *ngIf="activeTab === 'teacher'">
+      <form [formGroup]="teacherLoginForm" (ngSubmit)="handleTeacherSubmit()" class="space-y-6">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700" i18n="@@login.teacher.email.label">Email</label>
+          <div class="mt-1">
+            <input
+              id="email"
+              formControlName="email"
+              type="email"
+              class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              [ngClass]="{ 'border-red-500': teacherLoginForm.get('email')?.invalid && teacherLoginForm.get('email')?.touched }"
+            />
+          </div>
+           <div *ngIf="teacherLoginForm.get('email')?.invalid && teacherLoginForm.get('email')?.touched" class="mt-1 text-sm text-red-600">
+            <span *ngIf="teacherLoginForm.get('email')?.errors?.['required']" i18n>Email is required.</span>
+            <span *ngIf="teacherLoginForm.get('email')?.errors?.['email']" i18n>Please enter a valid email address.</span>
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700" i18n="@@login.teacher.password.label">Password</label>
+          <div class="mt-1">
+            <input
+              id="password"
+              formControlName="password"
+              type="password"
+              class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              [ngClass]="{ 'border-red-500': teacherLoginForm.get('password')?.invalid && teacherLoginForm.get('password')?.touched }"
+            />
+          </div>
+          <div *ngIf="teacherLoginForm.get('password')?.invalid && teacherLoginForm.get('password')?.touched" class="mt-1 text-sm text-red-600">
+             <span *ngIf="teacherLoginForm.get('password')?.errors?.['required']" i18n>Password is required.</span>
+          </div>
+        </div>
+
+        <input
+          type="submit"
+          i18n-value="@@login.button"
+          value="Login"
+          class="w-full mt-6 inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded-md px-5 py-2.5 text-center font-semibold"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+

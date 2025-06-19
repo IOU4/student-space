@@ -1,0 +1,43 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@exam.list.headline">Exams</h1>
+    <div>
+        <a routerLink="/exams/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@exam.list.createNew">Create new Exam</a>
+    </div>
+</div>
+@if (!exams || exams.length === 0) {
+<div i18n="@@exam.list.empty">No Exams could be found.</div>
+} @else {
+<div class="overflow-x-auto">
+    <table class="w-full">
+        <thead>
+            <tr>
+                <th scope="col" class="text-left p-2" i18n="@@exam.id.label">Id</th>
+                <th scope="col" class="text-left p-2" i18n="@@exam.title.label">Title</th>
+                <th scope="col" class="text-left p-2" i18n="@@exam.examYear.label">Exam Year</th>
+                <th scope="col" class="text-left p-2" i18n="@@exam.fileUrl.label">File Url</th>
+                <th scope="col" class="text-left p-2" i18n="@@exam.uploadedAt.label">Uploaded At</th>
+                <th scope="col" class="text-left p-2" i18n="@@exam.modulee.label">Modulee</th>
+                <th><!-- --></th>
+            </tr>
+        </thead>
+        <tbody class="border-t-2 border-black">
+            @for (exam of exams; track exam.id) {
+            <tr class="odd:bg-gray-100">
+                <td class="p-2">{{ exam.id }}</td>
+                <td class="p-2">{{ exam.title }}</td>
+                <td class="p-2">{{ exam.examYear }}</td>
+                <td class="p-2">{{ exam.fileUrl }}</td>
+                <td class="p-2">{{ exam.uploadedAt }}</td>
+                <td class="p-2">{{ exam.modulee }}</td>
+                <td class="p-2">
+                    <div class="float-right whitespace-nowrap">
+                        <a [routerLink]="['/exams/edit', exam.id]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@exam.list.edit">Edit</a>
+                        <button type="button" (click)="confirmDelete(exam.id!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@exam.list.delete">Delete</button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}

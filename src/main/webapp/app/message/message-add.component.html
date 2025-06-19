@@ -1,0 +1,13 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@message.add.headline">Add Message</h1>
+    <div>
+        <a routerLink="/messages" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@message.add.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="addForm" (ngSubmit)="handleSubmit()">
+    <app-input-row [group]="addForm" field="content" rowType="textarea" i18n-label="@@message.content.label" label="Content" />
+    <app-input-row [group]="addForm" field="sentAt" i18n-label="@@message.sentAt.label" label="Sent At" />
+    <app-input-row [group]="addForm" field="modulee" rowType="select" [options]="moduleeValues" i18n-label="@@message.modulee.label" label="Modulee" />
+    <app-input-row [group]="addForm" field="senderUser" rowType="select" [options]="senderUserValues" i18n-label="@@message.senderUser.label" label="Sender User" />
+    <input type="submit" i18n-value="@@message.add.headline" value="Add Message" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+</form>

@@ -1,0 +1,39 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@studentModuleEnrollment.list.headline">Student Module Enrollments</h1>
+    <div>
+        <a routerLink="/studentModuleEnrollments/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@studentModuleEnrollment.list.createNew">Create new Student Module Enrollment</a>
+    </div>
+</div>
+@if (!studentModuleEnrollments || studentModuleEnrollments.length === 0) {
+<div i18n="@@studentModuleEnrollment.list.empty">No Student Module Enrollments could be found.</div>
+} @else {
+<div class="overflow-x-auto">
+    <table class="w-full">
+        <thead>
+            <tr>
+                <th scope="col" class="text-left p-2" i18n="@@studentModuleEnrollment.id.label">Id</th>
+                <th scope="col" class="text-left p-2" i18n="@@studentModuleEnrollment.enrollmentDate.label">Enrollment Date</th>
+                <th scope="col" class="text-left p-2" i18n="@@studentModuleEnrollment.studentUser.label">Student User</th>
+                <th scope="col" class="text-left p-2" i18n="@@studentModuleEnrollment.modulee.label">Modulee</th>
+                <th><!-- --></th>
+            </tr>
+        </thead>
+        <tbody class="border-t-2 border-black">
+            @for (studentModuleEnrollment of studentModuleEnrollments; track studentModuleEnrollment.id) {
+            <tr class="odd:bg-gray-100">
+                <td class="p-2">{{ studentModuleEnrollment.id }}</td>
+                <td class="p-2">{{ studentModuleEnrollment.enrollmentDate }}</td>
+                <td class="p-2">{{ studentModuleEnrollment.studentUser }}</td>
+                <td class="p-2">{{ studentModuleEnrollment.modulee }}</td>
+                <td class="p-2">
+                    <div class="float-right whitespace-nowrap">
+                        <a [routerLink]="['/studentModuleEnrollments/edit', studentModuleEnrollment.id]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@studentModuleEnrollment.list.edit">Edit</a>
+                        <button type="button" (click)="confirmDelete(studentModuleEnrollment.id!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@studentModuleEnrollment.list.delete">Delete</button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}

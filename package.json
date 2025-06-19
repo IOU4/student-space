@@ -1,6 +1,5 @@
 {
   "name": "student-space-frontend",
-  "author": "Bootify.io",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

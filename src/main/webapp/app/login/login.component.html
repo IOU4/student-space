@@ -2,9 +2,10 @@
 <div class="flex justify-center items-center min-h-screen bg-gray-50">
   <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
     <div class="text-center">
-      <h1 class="text-3xl md:text-4xl font-medium mb-2" i18n="@@login.headline"> StudentSpace </h1>
+      <img src="public/logo.png" alt="Logo" class="mx-auto h-16 w-auto mb-4" />
+      <h1 class="text-3xl md:text-4xl font-medium mb-2" i18n="@@login.headline"> Espace Étudiant </h1>
       <p class="text-gray-600" i18n="@@login.subheadline">
-        Sign in to access your dashboard
+        Connectez-vous pour accéder à votre tableau de bord
       </p>
     </div>
 
@@ -20,7 +21,7 @@
         class="flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm focus:outline-none transition"
         i18n="@@login.tab.student"
       >
-        Student
+        Étudiant
       </button>
       <button
         (click)="setActiveTab('teacher')"
@@ -32,7 +33,7 @@
         class="flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm focus:outline-none transition"
         i18n="@@login.tab.teacher"
       >
-        Teacher
+        Enseignant
       </button>
     </div>
 
@@ -41,7 +42,7 @@
       <form [formGroup]="studentLoginForm" (ngSubmit)="handleStudentSubmit()" class="space-y-6">
         <div>
           <label for="apogeeNumber" class="block text-sm font-medium text-gray-700" i18n="@@login.student.apogee.label">
-            APOGEE Number
+            Numéro APOGEE
           </label>
           <div class="mt-1">
             <input
@@ -53,13 +54,13 @@
             />
           </div>
           <div *ngIf="studentLoginForm.get('apogeeNumber')?.invalid && studentLoginForm.get('apogeeNumber')?.touched" class="mt-1 text-sm text-red-600">
-            <span *ngIf="studentLoginForm.get('apogeeNumber')?.errors?.['required']" i18n>APOGEE number is required.</span>
+            <span *ngIf="studentLoginForm.get('apogeeNumber')?.errors?.['required']" i18n>Le numéro APOGEE est requis.</span>
           </div>
         </div>
         <input
           type="submit"
           i18n-value="@@login.button"
-          value="Login"
+          value="Connexion"
           class="w-full mt-6 inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded-md px-5 py-2.5 text-center font-semibold"
         />
       </form>
@@ -80,13 +81,13 @@
             />
           </div>
            <div *ngIf="teacherLoginForm.get('email')?.invalid && teacherLoginForm.get('email')?.touched" class="mt-1 text-sm text-red-600">
-            <span *ngIf="teacherLoginForm.get('email')?.errors?.['required']" i18n>Email is required.</span>
-            <span *ngIf="teacherLoginForm.get('email')?.errors?.['email']" i18n>Please enter a valid email address.</span>
+            <span *ngIf="teacherLoginForm.get('email')?.errors?.['required']" i18n>L'email est requis.</span>
+            <span *ngIf="teacherLoginForm.get('email')?.errors?.['email']" i18n>Veuillez entrer une adresse email valide.</span>
           </div>
         </div>
 
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700" i18n="@@login.teacher.password.label">Password</label>
+          <label for="password" class="block text-sm font-medium text-gray-700" i18n="@@login.teacher.password.label">Mot de passe</label>
           <div class="mt-1">
             <input
               id="password"
@@ -97,14 +98,14 @@
             />
           </div>
           <div *ngIf="teacherLoginForm.get('password')?.invalid && teacherLoginForm.get('password')?.touched" class="mt-1 text-sm text-red-600">
-             <span *ngIf="teacherLoginForm.get('password')?.errors?.['required']" i18n>Password is required.</span>
+             <span *ngIf="teacherLoginForm.get('password')?.errors?.['required']" i18n>Le mot de passe est requis.</span>
           </div>
         </div>
 
         <input
           type="submit"
           i18n-value="@@login.button"
-          value="Login"
+          value="Connexion"
           class="w-full mt-6 inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded-md px-5 py-2.5 text-center font-semibold"
         />
       </form>

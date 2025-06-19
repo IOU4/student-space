@@ -27,9 +27,15 @@ import { StudentModuleEnrollmentEditComponent } from './student-module-enrollmen
 import { ErrorComponent } from './error/error.component';
 import { LoginComponent } from './login/login.component';
 import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
+import { HomeComponent } from './home/home.component';
 
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+    title: 'Redirection...'
+  },
   {
     path: 'admin',
     component: AdminComponent,

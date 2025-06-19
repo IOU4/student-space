@@ -1,16 +1,25 @@
 import { Component, ElementRef, inject, HostListener } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from 'auth/auth.service';
 
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, NgOptimizedImage, RouterLink],
+  imports: [CommonModule],
   templateUrl: './header.component.html'
 })
 export class HeaderComponent {
-
   elRef = inject(ElementRef);
+  authService = inject(AuthService);
+
+  get user() {
+    return this.authService.getUser();
+  }
+
+  logout() {
+    this.authService.logout();
+    window.location.href = '/login';
+  }
 
   @HostListener('document:click', ['$event'])
   handleDropdown(event: Event) {

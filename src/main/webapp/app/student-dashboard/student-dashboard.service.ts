@@ -12,7 +12,7 @@ export interface StudentDTO {
 
 export interface StudentModuleEnrollmentDTO {
   id: number;
-  student: string; // apogeeNumber
+  studentUser: string; // apogeeNumber
   modulee: number; // module id
   groupNumber?: number;
 }
@@ -20,7 +20,7 @@ export interface StudentModuleEnrollmentDTO {
 export interface ModuleeDTO {
   id: number;
   name: string;
-  teacherName: string;
+  teacher: string; // firstName of teacher
 }
 
 @Injectable({ providedIn: 'root' })

@@ -12,4 +12,5 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 
     Message findFirstBySenderUser(User user);
 
+    java.util.List<Message> findByModulee_IdOrderBySentAtAsc(Integer moduleeId);
 }

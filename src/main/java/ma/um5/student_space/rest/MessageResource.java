@@ -82,4 +82,9 @@ public class MessageResource {
                 .collect(CustomCollectors.toSortedMap(User::getId, User::getEmail)));
     }
 
+    @GetMapping("/module/{moduleId}")
+    public ResponseEntity<List<MessageDTO>> getMessagesByModule(@PathVariable Integer moduleId) {
+        return ResponseEntity.ok(messageService.findAllByModuleeId(moduleId));
+    }
+
 }

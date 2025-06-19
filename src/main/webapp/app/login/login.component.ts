@@ -54,15 +54,14 @@ export class LoginComponent {
     if (!this.studentLoginForm.valid) {
       return;
     }
-    // Create the credentials object safely after validation
     const credentials: StudentLoginDTO = {
       apogeeNumber: this.studentLoginForm.value.apogeeNumber!
     };
 
     this.authService.loginStudent(credentials).subscribe({
       next: (response) => {
-        console.log('Student logged in successfully!', response.user);
-        this.router.navigate(['/dashboard']); // Redirect to dashboard on success
+        // Store student info is now handled by AuthService
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => this.errorHandler.handleServerError(error.error, this.studentLoginForm),
     });
@@ -77,7 +76,6 @@ export class LoginComponent {
     if (!this.teacherLoginForm.valid) {
       return;
     }
-    // Create the credentials object safely after validation
     const credentials: TeacherLoginDTO = {
       email: this.teacherLoginForm.value.email!,
       password: this.teacherLoginForm.value.password!
@@ -85,8 +83,8 @@ export class LoginComponent {
 
     this.authService.loginTeacher(credentials).subscribe({
       next: (response) => {
-        console.log('Teacher logged in successfully!', response.user);
-        this.router.navigate(['/dashboard']); // Redirect to dashboard on success
+        // Store teacher info is now handled by AuthService
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => this.errorHandler.handleServerError(error.error, this.teacherLoginForm),
     });

@@ -20,7 +20,8 @@ export interface TeacherLoginDTO {
 // Interface for the authentication response from the backend
 export interface AuthResponse {
   token: string;
-  user: any; // Could be a more specific StudentDTO or TeacherDTO
+  student?: any;
+  teacher?: any;
 }
 
 
@@ -30,6 +31,7 @@ export interface AuthResponse {
 export class AuthService {
   http = inject(HttpClient);
   private readonly TOKEN_KEY = 'authToken';
+  private readonly USER_KEY = 'authUser';
 
   /**
    * Logs in a student using their APOGEE number.
@@ -42,7 +44,10 @@ export class AuthService {
       .post<AuthResponse>(`${environment.apiUrl}/api/login/student`, credentials)
       .pipe(
         // Use tap to perform a side effect: storing the token
-        tap((response) => this.storeToken(response.token))
+        tap((response) => {
+          this.storeToken(response.token);
+          this.storeUser(response.student);
+        })
       );
   }
 
@@ -57,7 +62,10 @@ export class AuthService {
       .post<AuthResponse>(`${environment.apiUrl}/api/login/teacher`, credentials)
       .pipe(
         // Use tap to perform a side effect: storing the token
-        tap((response) => this.storeToken(response.token))
+        tap((response) => {
+          this.storeToken(response.token);
+          this.storeUser(response.teacher);
+        })
       );
   }
 
@@ -72,6 +80,16 @@ export class AuthService {
   }
 
   /**
+   * Stores the user information in the browser's localStorage.
+   * @param user The user object (student or teacher).
+   */
+  private storeUser(user: any): void {
+    if (user) {
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    }
+  }
+
+  /**
    * Retrieves the JWT token from localStorage.
    * @returns The token string or null if not found.
    */
@@ -80,10 +98,20 @@ export class AuthService {
   }
 
   /**
-   * Logs the user out by removing the token from localStorage.
+   * Retrieves the user information from localStorage.
+   * @returns The user object or null if not found.
+   */
+  getUser(): any | null {
+    const user = localStorage.getItem(this.USER_KEY);
+    return user ? JSON.parse(user) : null;
+  }
+
+  /**
+   * Logs the user out by removing the token and user information from localStorage.
    */
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USER_KEY);
     // You might also want to redirect the user to the login page here.
   }
 }

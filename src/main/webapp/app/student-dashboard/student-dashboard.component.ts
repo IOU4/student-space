@@ -3,6 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { StudentDashboardService, StudentDTO, ModuleeDTO, StudentModuleEnrollmentDTO } from './student-dashboard.service';
+import { AuthService } from 'auth/auth.service';
+import { TeacherService } from 'app/teacher/teacher.service';
+import { TeacherDTO } from 'app/teacher/teacher.model';
+import { ModuleChatComponent } from '../module-chat/module-chat.component';
 
 // Define interfaces for our data structures for type safety
 interface Student {
@@ -22,20 +26,27 @@ interface Module {
 @Component({
   selector: 'app-student-dashboard',
   standalone: true, // Using standalone components is modern Angular practice
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, ModuleChatComponent],
   templateUrl: './student-dashboard.component.html',
   providers: [StudentDashboardService]
 })
 export class StudentDashboardComponent implements OnInit {
   router = inject(Router);
   service = inject(StudentDashboardService);
+  authService = inject(AuthService);
+  teacherService = inject(TeacherService);
 
   // --- MOCK DATA ---
   // In a real application, this data would come from a service that calls your API.
 
   student: StudentDTO | null = null;
   modules: ModuleeDTO[] = [];
+  teachersMap: Record<string, TeacherDTO> = {};
+  loading = false;
   currentAcademicYear: string = "2024-2025"; // This could also come from an API
+  selectedModuleId: number | null = null;
+  showChatModal: boolean = false;
+  chatModuleId: number | null = null;
 
   ngOnInit(): void {
     // Simulate fetching data from a backend service
@@ -43,18 +54,36 @@ export class StudentDashboardComponent implements OnInit {
   }
 
   loadDashboardData(): void {
-    const apogeeNumber = '23131';
-    this.service.getStudent(apogeeNumber).subscribe(student => {
-      this.student = student;
-    });
-    this.service.getStudentModuleEnrollments().subscribe(enrollments => {
-      const studentEnrollments = enrollments.filter(e => e.student === apogeeNumber);
-      const moduleIds = studentEnrollments.map(e => e.modulee);
-      // Fetch all modules in parallel
-      Promise.all(moduleIds.map(id => this.service.getModulee(id).toPromise()))
-        .then((modules: (ModuleeDTO | undefined)[]) => {
-          this.modules = modules.filter((m): m is ModuleeDTO => m !== undefined);
+    this.loading = true;
+    // Get student from AuthService (localStorage)
+    this.student = this.authService.getUser();
+    if (!this.student || !this.student.apogeeNumber) {
+      // Not logged in as student, redirect to login
+      this.router.navigate(['/login']);
+      return;
+    }
+    const apogeeNumber = this.student.apogeeNumber;
+    // Fetch all teachers first
+    this.teacherService.getAllTeachers().subscribe({
+      next: (teachers: TeacherDTO[]) => {
+        this.teachersMap = {};
+        teachers.forEach(t => { if (t.firstName) this.teachersMap[t.firstName] = t; });
+        this.service.getStudentModuleEnrollments().subscribe({
+          next: enrollments => {
+            const studentEnrollments = enrollments.filter(e => e.studentUser === apogeeNumber);
+            const moduleIds = studentEnrollments.map(e => e.modulee);
+            // Fetch all modules in parallel
+            Promise.all(moduleIds.map(id => this.service.getModulee(id).toPromise()))
+              .then((modules: (ModuleeDTO | undefined)[]) => {
+                this.modules = modules.filter((m): m is ModuleeDTO => m !== undefined);
+                this.loading = false;
+              })
+              .catch(() => { this.loading = false; });
+          },
+          error: () => { this.loading = false; }
         });
+      },
+      error: () => { this.loading = false; }
     });
   }
 
@@ -64,10 +93,8 @@ export class StudentDashboardComponent implements OnInit {
    * Navigates to the chat page for a specific module.
    * @param moduleId The ID of the module chat to open.
    */
-  viewChat(moduleId: number): void {
-    console.log(`Navigating to chat for module ID: ${moduleId}`);
-    // Example navigation: this.router.navigate(['/modules', moduleId, 'chat']);
-    this.router.navigate(['/chat', moduleId]); // Or your actual chat route
+  viewChat(moduleId: number) {
+    this.selectedModuleId = this.selectedModuleId === moduleId ? null : moduleId;
   }
 
   /**
@@ -78,6 +105,16 @@ export class StudentDashboardComponent implements OnInit {
     console.log(`Navigating to exams for module ID: ${moduleId}`);
     // Example navigation: this.router.navigate(['/modules', moduleId, 'exams']);
     this.router.navigate(['/exams', moduleId]); // Or your actual exams route
+  }
+
+  openChatModal(moduleId: number) {
+    this.chatModuleId = moduleId;
+    this.showChatModal = true;
+  }
+
+  closeChatModal() {
+    this.showChatModal = false;
+    this.chatModuleId = null;
   }
 }
 

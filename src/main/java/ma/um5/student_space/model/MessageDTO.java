@@ -23,4 +23,7 @@ public class MessageDTO {
     @NotNull
     private Integer senderUser;
 
+    private String senderName;
+    private Integer senderUserId;
+
 }

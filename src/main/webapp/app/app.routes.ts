@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import { AdminComponent } from './admin/admin.component';
 import { FiliereListComponent } from './filiere/filiere-list.component';
 import { FiliereAddComponent } from './filiere/filiere-add.component';
 import { FiliereEditComponent } from './filiere/filiere-edit.component';
@@ -31,9 +31,9 @@ import { StudentDashboardComponent } from './student-dashboard/student-dashboard
 
 export const routes: Routes = [
   {
-    path: '',
-    component: HomeComponent,
-    title: $localize`:@@home.index.headline:Welcome to your new app!`
+    path: 'admin',
+    component: AdminComponent,
+    title: $localize`:@@admin.index.headline:Welcome to your new admin panel!`
   },
   {
     path: 'dashboard',

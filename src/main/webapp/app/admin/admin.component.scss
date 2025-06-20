@@ -1,1 +1,31 @@
 // ...existing code from home.component.scss will be placed here...
+
+// Style for admin panel similar to dashboard
+.admin-panel {
+  background: linear-gradient(135deg, #f0f6ff 0%, #ffffff 100%);
+  min-height: 100vh;
+  padding-top: 3rem;
+}
+
+.admin-panel h1 {
+  color: #2563eb;
+}
+
+.admin-panel .shadow-lg {
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.admin-panel .rounded-xl {
+  border-radius: 1rem;
+}
+
+.admin-panel a {
+  font-weight: 500;
+  color: #2563eb;
+  transition: background 0.2s, color 0.2s;
+}
+
+.admin-panel a:hover {
+  background: #e0e7ff;
+  color: #1e40af;
+}

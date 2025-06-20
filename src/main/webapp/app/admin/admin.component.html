@@ -1,15 +1,12 @@
-<h1 class="grow text-3xl md:text-4xl font-medium mb-8" i18n="@@admin.index.headline">Welcome to your new admin panel!</h1>
-<p class="mb-12" i18n="@@admin.index.text">Your app was created with <a href="https://bootify.io" target="_blank" class="underline">Bootify.io</a> and can now be customized. If you are happy with the result, <strong>please recommend us to other developers</strong> - so Bootify.io can grow further.</p>
+<h1 class="text-3xl md:text-4xl font-bold text-blue-700 mb-8">Bienvenue sur le panneau d'administration</h1>
 <div class="md:w-2/5 mb-12">
-    <h4 class="text-2xl font-medium mb-4" i18n="@@admin.index.exploreEntities">Explore your entities</h4>
-    <div class="flex flex-col border border-gray-300 rounded">
-        <a routerLink="/filieres" class="w-full border-gray-300 hover:bg-gray-100 border-b rounded-t px-4 py-2" i18n="@@filiere.list.headline">Filieres</a>
-        <a routerLink="/modulees" class="w-full border-gray-300 hover:bg-gray-100 border-b px-4 py-2" i18n="@@modulee.list.headline">Modulees</a>
-        <a routerLink="/users" class="w-full border-gray-300 hover:bg-gray-100 border-b px-4 py-2" i18n="@@user.list.headline">Users</a>
-        <a routerLink="/students" class="w-full border-gray-300 hover:bg-gray-100 border-b px-4 py-2" i18n="@@student.list.headline">Students</a>
-        <a routerLink="/teachers" class="w-full border-gray-300 hover:bg-gray-100 border-b px-4 py-2" i18n="@@teacher.list.headline">Teachers</a>
-        <a routerLink="/exams" class="w-full border-gray-300 hover:bg-gray-100 border-b px-4 py-2" i18n="@@exam.list.headline">Exams</a>
-        <a routerLink="/messages" class="w-full border-gray-300 hover:bg-gray-100 border-b px-4 py-2" i18n="@@message.list.headline">Messages</a>
-        <a routerLink="/studentModuleEnrollments" class="w-full border-gray-300 hover:bg-gray-100 rounded-b px-4 py-2" i18n="@@studentModuleEnrollment.list.headline">Student Module Enrollments</a>
+    <h4 class="text-2xl font-semibold mb-4">Gérer les entités</h4>
+    <div class="flex flex-col border border-gray-200 rounded-xl shadow-lg bg-white">
+        <a routerLink="/filieres" class="w-full border-b border-gray-200 hover:bg-blue-50 rounded-t px-4 py-3 transition-colors">Filières</a>
+        <a routerLink="/modulees" class="w-full border-b border-gray-200 hover:bg-blue-50 px-4 py-3 transition-colors">Modules</a>
+        <a routerLink="/students" class="w-full border-b border-gray-200 hover:bg-blue-50 px-4 py-3 transition-colors">Étudiants</a>
+        <a routerLink="/teachers" class="w-full border-b border-gray-200 hover:bg-blue-50 px-4 py-3 transition-colors">Enseignants</a>
+        <a routerLink="/exams" class="w-full border-b border-gray-200 hover:bg-blue-50 px-4 py-3 transition-colors">Examens</a>
+        <a routerLink="/studentModuleEnrollments" class="w-full rounded-b hover:bg-blue-50 px-4 py-3 transition-colors">Inscriptions aux modules</a>
     </div>
 </div>

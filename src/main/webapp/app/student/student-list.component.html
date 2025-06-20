@@ -1,22 +1,22 @@
 <div class="flex flex-wrap mb-6">
-    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@student.list.headline">Students</h1>
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2">Étudiants</h1>
     <div>
-        <a routerLink="/students/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@student.list.createNew">Create new Student</a>
+        <a routerLink="/students/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2">Ajouter un nouvel étudiant</a>
     </div>
 </div>
 @if (!students || students.length === 0) {
-<div i18n="@@student.list.empty">No Students could be found.</div>
+<div>Aucun étudiant trouvé.</div>
 } @else {
 <div class="overflow-x-auto">
     <table class="w-full">
         <thead>
             <tr>
-                <th scope="col" class="text-left p-2" i18n="@@student.apogeeNumber.label">Apogee Number</th>
-                <th scope="col" class="text-left p-2" i18n="@@student.firstName.label">First Name</th>
-                <th scope="col" class="text-left p-2" i18n="@@student.lastName.label">Last Name</th>
-                <th scope="col" class="text-left p-2" i18n="@@student.createdAt.label">Created At</th>
-                <th scope="col" class="text-left p-2" i18n="@@student.user.label">User</th>
-                <th scope="col" class="text-left p-2" i18n="@@student.filiere.label">Filiere</th>
+                <th scope="col" class="text-left p-2">Numéro APOGEE</th>
+                <th scope="col" class="text-left p-2">Prénom</th>
+                <th scope="col" class="text-left p-2">Nom</th>
+                <th scope="col" class="text-left p-2">Date de création</th>
+                <th scope="col" class="text-left p-2">Utilisateur</th>
+                <th scope="col" class="text-left p-2">Filière</th>
                 <th><!-- --></th>
             </tr>
         </thead>
@@ -31,8 +31,8 @@
                 <td class="p-2">{{ student.filiere }}</td>
                 <td class="p-2">
                     <div class="float-right whitespace-nowrap">
-                        <a [routerLink]="['/students/edit', student.apogeeNumber]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@student.list.edit">Edit</a>
-                        <button type="button" (click)="confirmDelete(student.apogeeNumber!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@student.list.delete">Delete</button>
+                        <a [routerLink]="['/students/edit', student.apogeeNumber]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">Modifier</a>
+                        <button type="button" (click)="confirmDelete(student.apogeeNumber!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">Supprimer</button>
                     </div>
                 </td>
             </tr>

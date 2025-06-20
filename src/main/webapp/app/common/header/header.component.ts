@@ -1,6 +1,7 @@
 import { Component, ElementRef, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from 'auth/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { AuthService } from 'auth/auth.service';
 export class HeaderComponent {
   elRef = inject(ElementRef);
   authService = inject(AuthService);
+  router = inject(Router);
 
   get user() {
     return this.authService.getUser();
@@ -19,6 +21,10 @@ export class HeaderComponent {
   logout() {
     this.authService.logout();
     window.location.href = '/login';
+  }
+
+  goHome() {
+    this.router.navigate(['/']);
   }
 
   @HostListener('document:click', ['$event'])

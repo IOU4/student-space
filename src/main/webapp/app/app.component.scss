@@ -1,1 +1,15 @@
+/* Make the app use flex layout to push footer to the bottom */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+app-footer {
+  flex-shrink: 0;
+}
 

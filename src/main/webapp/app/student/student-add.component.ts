@@ -6,7 +6,6 @@ import { InputRowComponent } from 'app/common/input-row/input-row.component';
 import { StudentService } from 'app/student/student.service';
 import { StudentDTO } from 'app/student/student.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
-import { validOffsetDateTime } from 'app/common/utils';
 
 
 @Component({
@@ -20,15 +19,14 @@ export class StudentAddComponent implements OnInit {
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
 
-  userValues?: Map<number,string>;
-  filiereValues?: Map<number,string>;
+  filiereValues?: Map<number, string>;
 
   addForm = new FormGroup({
     apogeeNumber: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     firstName: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     lastName: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-    createdAt: new FormControl(null, [validOffsetDateTime]),
-    user: new FormControl(null),
+    email: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
+    password: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     filiere: new FormControl(null)
   }, { updateOn: 'submit' });
 
@@ -41,16 +39,11 @@ export class StudentAddComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.studentService.getUserValues()
-        .subscribe({
-          next: (data) => this.userValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
     this.studentService.getFiliereValues()
-        .subscribe({
-          next: (data) => this.filiereValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => this.filiereValues = data,
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
   handleSubmit() {
@@ -61,14 +54,14 @@ export class StudentAddComponent implements OnInit {
     }
     const data = new StudentDTO(this.addForm.value);
     this.studentService.createStudent(data)
-        .subscribe({
-          next: () => this.router.navigate(['/students'], {
-            state: {
-              msgSuccess: this.getMessage('created')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
-        });
+      .subscribe({
+        next: () => this.router.navigate(['/students'], {
+          state: {
+            msgSuccess: this.getMessage('created')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
+      });
   }
 
 }

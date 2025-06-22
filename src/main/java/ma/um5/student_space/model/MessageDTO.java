@@ -20,10 +20,7 @@ public class MessageDTO {
     @NotNull
     private Integer modulee;
 
-    @NotNull
-    private Integer senderUser;
-
+    private String studentId;
+    private Boolean isTeacher;
     private String senderName;
-    private Integer senderUserId;
-
 }

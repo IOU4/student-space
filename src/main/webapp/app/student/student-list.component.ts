@@ -10,7 +10,8 @@ import { StudentDTO } from 'app/student/student.model';
 @Component({
   selector: 'app-student-list',
   imports: [CommonModule, RouterLink],
-  templateUrl: './student-list.component.html'})
+  templateUrl: './student-list.component.html'
+})
 export class StudentListComponent implements OnInit, OnDestroy {
 
   studentService = inject(StudentService);
@@ -23,7 +24,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
     const messages: Record<string, string> = {
       confirm: $localize`:@@delete.confirm:Do you really want to delete this element? This cannot be undone.`,
       deleted: $localize`:@@student.delete.success:Student was removed successfully.`,
-      'student.studentModuleEnrollment.studentUser.referenced': $localize`:@@student.studentModuleEnrollment.studentUser.referenced:This entity is still referenced by Student Module Enrollment ${details?.id} via field Student User.`
+      'student.studentModuleEnrollment.student.referenced': $localize`:@@student.studentModuleEnrollment.student.referenced:This entity is still referenced by Student Module Enrollment ${details?.id} via field Student .`
     };
     return messages[key];
   }
@@ -40,13 +41,13 @@ export class StudentListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.navigationSubscription!.unsubscribe();
   }
-  
+
   loadData() {
     this.studentService.getAllStudents()
-        .subscribe({
-          next: (data) => this.students = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => this.students = data,
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
   confirmDelete(apogeeNumber: string) {
@@ -54,25 +55,25 @@ export class StudentListComponent implements OnInit, OnDestroy {
       return;
     }
     this.studentService.deleteStudent(apogeeNumber)
-        .subscribe({
-          next: () => this.router.navigate(['/students'], {
-            state: {
-              msgInfo: this.getMessage('deleted')
-            }
-          }),
-          error: (error) => {
-            if (error.error?.code === 'REFERENCED') {
-              const messageParts = error.error.message.split(',');
-              this.router.navigate(['/students'], {
-                state: {
-                  msgError: this.getMessage(messageParts[0], { id: messageParts[1] })
-                }
-              });
-              return;
-            }
-            this.errorHandler.handleServerError(error.error)
+      .subscribe({
+        next: () => this.router.navigate(['/students'], {
+          state: {
+            msgInfo: this.getMessage('deleted')
           }
-        });
+        }),
+        error: (error) => {
+          if (error.error?.code === 'REFERENCED') {
+            const messageParts = error.error.message.split(',');
+            this.router.navigate(['/students'], {
+              state: {
+                msgError: this.getMessage(messageParts[0], { id: messageParts[1] })
+              }
+            });
+            return;
+          }
+          this.errorHandler.handleServerError(error.error)
+        }
+      });
   }
 
 }

@@ -7,8 +7,9 @@
 <form [formGroup]="addForm" (ngSubmit)="handleSubmit()">
     <app-input-row [group]="addForm" field="firstName" i18n-label="@@teacher.firstName.label" label="First Name" />
     <app-input-row [group]="addForm" field="lastName" i18n-label="@@teacher.lastName.label" label="Last Name" />
+    <app-input-row [group]="addForm" field="email" i18n-label="@@teacher.email.label" label="Email" />
+    <app-input-row [group]="addForm" field="password" rowType="password" i18n-label="@@teacher.password.label" label="Password" />
+    <app-input-row [group]="addForm" field="phoneNumber" i18n-label="@@teacher.phone.label" label="Phone" />
     <app-input-row [group]="addForm" field="specialty" i18n-label="@@teacher.specialty.label" label="Specialty" />
-    <app-input-row [group]="addForm" field="createdAt" i18n-label="@@teacher.createdAt.label" label="Created At" />
-    <app-input-row [group]="addForm" field="user" rowType="select" [options]="userValues" i18n-label="@@teacher.user.label" label="User" />
     <input type="submit" i18n-value="@@teacher.add.headline" value="Add Teacher" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
 </form>

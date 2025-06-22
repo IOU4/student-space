@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import lombok.Getter;
@@ -21,11 +23,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-public class Student {
+public class Student implements Serializable{
 
     @Id
     @Column(nullable = false, updatable = false, length = 100)
     private String apogeeNumber;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String passwordHash;
 
     @Column(nullable = false, length = 100)
     private String firstName;
@@ -33,19 +41,12 @@ public class Student {
     @Column(nullable = false, length = 100)
     private String lastName;
 
-    @Column
-    private OffsetDateTime createdAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "filiere_id")
     private Filiere filiere;
 
-    @OneToMany(mappedBy = "studentUser")
-    private Set<StudentModuleEnrollment> studentUserStudentModuleEnrollments;
+    @OneToMany(mappedBy = "student")
+    private Set<StudentModuleEnrollment> ModuleEnrollments;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

@@ -6,8 +6,6 @@ import { InputRowComponent } from 'app/common/input-row/input-row.component';
 import { ModuleeService } from 'app/modulee/modulee.service';
 import { ModuleeDTO } from 'app/modulee/modulee.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
-import { validOffsetDateTime } from 'app/common/utils';
-
 
 @Component({
   selector: 'app-modulee-add',
@@ -20,15 +18,14 @@ export class ModuleeAddComponent implements OnInit {
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
 
-  filiereValues?: Map<number,string>;
-  teacherValues?: Record<string,string>;
+  filiereValues?: Map<number, string>;
+  teacherValues?: Record<number, string>;
 
   addForm = new FormGroup({
     name: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
     description: new FormControl(null),
-    createdAt: new FormControl(null, [validOffsetDateTime]),
     filiere: new FormControl(null, [Validators.required]),
-    teacher: new FormControl(null)
+    teacher: new FormControl(null, [Validators.required])
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
@@ -40,15 +37,15 @@ export class ModuleeAddComponent implements OnInit {
 
   ngOnInit() {
     this.moduleeService.getFiliereValues()
-        .subscribe({
-          next: (data) => this.filiereValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => this.filiereValues = data,
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
     this.moduleeService.getTeacherValues()
-        .subscribe({
-          next: (data) => this.teacherValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => this.teacherValues = data,
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
   handleSubmit() {
@@ -59,14 +56,14 @@ export class ModuleeAddComponent implements OnInit {
     }
     const data = new ModuleeDTO(this.addForm.value);
     this.moduleeService.createModulee(data)
-        .subscribe({
-          next: () => this.router.navigate(['/modulees'], {
-            state: {
-              msgSuccess: this.getMessage('created')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
-        });
+      .subscribe({
+        next: () => this.router.navigate(['/modulees'], {
+          state: {
+            msgSuccess: this.getMessage('created')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
+      });
   }
 
 }

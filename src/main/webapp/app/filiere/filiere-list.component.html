@@ -14,7 +14,7 @@
                 <th scope="col" class="text-left p-2">Id</th>
                 <th scope="col" class="text-left p-2">Nom</th>
                 <th scope="col" class="text-left p-2">Année universitaire</th>
-                <th scope="col" class="text-left p-2">Date de création</th>
+                <th scope="col" class="text-left p-2">Semestre</th>
                 <th><!-- --></th>
             </tr>
         </thead>
@@ -24,7 +24,7 @@
                 <td class="p-2">{{ filiere.id }}</td>
                 <td class="p-2">{{ filiere.name }}</td>
                 <td class="p-2">{{ filiere.academicYear }}</td>
-                <td class="p-2">{{ filiere.createdAt }}</td>
+                <td class="p-2">{{ filiere.semester }}</td>
                 <td class="p-2">
                     <div class="float-right whitespace-nowrap">
                         <a [routerLink]="['/filieres/edit', filiere.id]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">Modifier</a>

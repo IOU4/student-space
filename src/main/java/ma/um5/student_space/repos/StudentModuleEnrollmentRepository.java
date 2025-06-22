@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudentModuleEnrollmentRepository extends JpaRepository<StudentModuleEnrollment, Long> {
 
-    StudentModuleEnrollment findFirstByStudentUser(Student student);
+    StudentModuleEnrollment findFirstByStudent(Student student);
 
     StudentModuleEnrollment findFirstByModulee(Modulee modulee);
 

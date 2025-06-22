@@ -28,7 +28,6 @@ export class FiliereEditComponent implements OnInit {
     name: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
     academicYear: new FormControl(null, [Validators.required, Validators.maxLength(20)]),
     description: new FormControl(null),
-    createdAt: new FormControl(null, [validOffsetDateTime])
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
@@ -41,10 +40,10 @@ export class FiliereEditComponent implements OnInit {
   ngOnInit() {
     this.currentId = +this.route.snapshot.params['id'];
     this.filiereService.getFiliere(this.currentId!)
-        .subscribe({
-          next: (data) => updateForm(this.editForm, data),
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => updateForm(this.editForm, data),
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
   handleSubmit() {
@@ -55,14 +54,14 @@ export class FiliereEditComponent implements OnInit {
     }
     const data = new FiliereDTO(this.editForm.value);
     this.filiereService.updateFiliere(this.currentId!, data)
-        .subscribe({
-          next: () => this.router.navigate(['/filieres'], {
-            state: {
-              msgSuccess: this.getMessage('updated')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
-        });
+      .subscribe({
+        next: () => this.router.navigate(['/filieres'], {
+          state: {
+            msgSuccess: this.getMessage('updated')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
+      });
   }
 
 }

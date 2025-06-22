@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import ma.um5.student_space.domain.Student;
-import ma.um5.student_space.domain.User;
 import ma.um5.student_space.model.AuthResponseDTO;
 import ma.um5.student_space.model.StudentDTO;
 import ma.um5.student_space.model.StudentLoginDTO;
@@ -15,29 +15,17 @@ import ma.um5.student_space.model.TeacherDTO;
 import ma.um5.student_space.model.TeacherLoginDTO;
 import ma.um5.student_space.repos.StudentRepository;
 import ma.um5.student_space.repos.TeacherRepository;
-import ma.um5.student_space.repos.UserRepository;
-import ma.um5.student_space.domain.Teacher;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final JwtService jwtService;
     private final StudentService studentService;
     private final TeacherService teacherService;
     private final TeacherRepository teacherRepository;
-
-    public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository, StudentRepository studentRepository, JwtService jwtService, StudentService studentService, TeacherService teacherService, TeacherRepository teacherRepository) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.studentRepository = studentRepository;
-        this.jwtService = jwtService;
-        this.studentService = studentService;
-        this.teacherService = teacherService;
-        this.teacherRepository = teacherRepository;
-    }
 
     /**
      * Authenticates a student. We use @Transactional to ensure the session remains
@@ -49,8 +37,7 @@ public class AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("Student not found with APOGEE number: " + loginDTO.apogeeNumber()));
 
         // The user is fetched from the student relationship
-        User user = student.getUser();
-        String token = jwtService.generateToken(user);
+        String token = jwtService.generateToken(student);
 
         StudentDTO studentDTO = studentService.findAll().stream()
             .filter(s -> s.getApogeeNumber().equals(student.getApogeeNumber()))
@@ -68,15 +55,15 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password())
         );
 
-        User user = userRepository.findByEmail(loginDTO.email())
+        var teacher = teacherRepository.findByEmail(loginDTO.email())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + loginDTO.email()));
 
-        String token = jwtService.generateToken(user);
+        String token = jwtService.generateToken(teacher);
 
-        Teacher teacher = teacherRepository.findFirstByUser(user);
-        TeacherDTO teacherDTO = teacher != null ? teacherService.findAll().stream()
+        TeacherDTO teacherDTO = teacherService.findAll().stream()
             .filter(t -> t.getFirstName().equals(teacher.getFirstName()))
-            .findFirst().orElse(null) : null;
+            .findFirst()
+            .orElse(null);
 
         return new AuthResponseDTO(token, null, teacherDTO);
     }

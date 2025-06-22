@@ -2,7 +2,6 @@ package ma.um5.student_space.model;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.OffsetDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +19,7 @@ public class FiliereDTO {
     @NotNull
     @Size(max = 20)
     private String academicYear;
-
     private String description;
-
-    private OffsetDateTime createdAt;
+    private String semester;
 
 }

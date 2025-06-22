@@ -1,13 +1,13 @@
 package ma.um5.student_space.rest;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.Map;
 import ma.um5.student_space.domain.Filiere;
-import ma.um5.student_space.domain.User;
 import ma.um5.student_space.model.StudentDTO;
 import ma.um5.student_space.repos.FiliereRepository;
-import ma.um5.student_space.repos.UserRepository;
 import ma.um5.student_space.service.StudentService;
 import ma.um5.student_space.util.CustomCollectors;
 import ma.um5.student_space.util.ReferencedException;
@@ -28,18 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/students", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 public class StudentResource {
 
     private final StudentService studentService;
-    private final UserRepository userRepository;
     private final FiliereRepository filiereRepository;
 
-    public StudentResource(final StudentService studentService, final UserRepository userRepository,
-            final FiliereRepository filiereRepository) {
-        this.studentService = studentService;
-        this.userRepository = userRepository;
-        this.filiereRepository = filiereRepository;
-    }
 
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
@@ -75,13 +69,6 @@ public class StudentResource {
         }
         studentService.delete(apogeeNumber);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/userValues")
-    public ResponseEntity<Map<Integer, String>> getUserValues() {
-        return ResponseEntity.ok(userRepository.findAll(Sort.by("id"))
-                .stream()
-                .collect(CustomCollectors.toSortedMap(User::getId, User::getEmail)));
     }
 
     @GetMapping("/filiereValues")

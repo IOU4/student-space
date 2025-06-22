@@ -1,25 +1,25 @@
 package ma.um5.student_space.service;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import ma.um5.student_space.domain.User;
-import ma.um5.student_space.repos.UserRepository;
+import lombok.RequiredArgsConstructor;
+import ma.um5.student_space.repos.StudentRepository;
+import ma.um5.student_space.repos.TeacherRepository;
 
 import java.util.Collections;
 
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
     /**
      * Locates the user based on the email.
      * @param email the email identifying the user whose data is required.
@@ -28,14 +28,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        var student = studentRepository.findByEmail(email).orElse(null);
+        if(student != null) {
+            return new User(
+                student.getEmail(),
+                student.getPasswordHash(),
+                Collections.singletonList(new SimpleGrantedAuthority("student"))
+            );
+        } else {
+            var teacher = teacherRepository.findByEmail(email)
+                .orElseThrow(() ->new UsernameNotFoundException("User not found with email: " + email));
+            return new User(
+                teacher.getEmail(),
+                teacher.getPasswordHash(),
+                Collections.singletonList(new SimpleGrantedAuthority("teacher"))
+            );
+
+        }
 
         // Creates a Spring Security User object
-        return new org.springframework.security.core.userdetails.User(
-            user.getEmail(),
-            user.getPasswordHash(), // Assuming your User entity has this method
-            Collections.singletonList(new SimpleGrantedAuthority(user.getRole())) // And this one for the role
-        );
     }
 }

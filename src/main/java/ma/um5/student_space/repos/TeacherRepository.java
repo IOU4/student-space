@@ -1,14 +1,14 @@
 package ma.um5.student_space.repos;
 
 import ma.um5.student_space.domain.Teacher;
-import ma.um5.student_space.domain.User;
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 
-public interface TeacherRepository extends JpaRepository<Teacher, String> {
-
-    Teacher findFirstByUser(User user);
-
+    Optional<Teacher> findByEmail(String email);
     boolean existsByFirstNameIgnoreCase(String firstName);
 
 }

@@ -36,11 +36,11 @@ export class ModuleeService {
 
   getFiliereValues() {
     return this.http.get<Record<string, string>>(this.resourcePath + '/filiereValues')
-        .pipe(map(transformRecordToMap));
+      .pipe(map(transformRecordToMap));
   }
 
   getTeacherValues() {
-    return this.http.get<Record<string, string>>(this.resourcePath + '/teacherValues');
+    return this.http.get<Record<number, string>>(this.resourcePath + '/teacherValues');
   }
 
 }

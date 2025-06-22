@@ -44,7 +44,7 @@ public class StudentModuleEnrollment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_user_id", nullable = false)
-    private Student studentUser;
+    private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modulee_id", nullable = false)

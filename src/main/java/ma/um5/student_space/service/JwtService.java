@@ -3,7 +3,8 @@ package ma.um5.student_space.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import ma.um5.student_space.domain.User;
+import ma.um5.student_space.domain.Student;
+import ma.um5.student_space.domain.Teacher;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,18 +36,18 @@ public class JwtService {
         return createToken(claims, userDetails.getUsername());
     }
 
-    /**
-     * Generates a JWT for a given User entity.
-     * This is a convenience method for direct token generation after a successful login.
-     * @param user The user entity to generate the token for.
-     * @return A signed JWT string.
-     */
-    public String generateToken(User user) {
+    public String generateToken(Student student) {
         Map<String, Object> claims = new HashMap<>();
         // Add custom claims like role or user ID for easier access on the frontend
-        claims.put("role", user.getRole());
-        claims.put("userId", user.getId());
-        return createToken(claims, user.getEmail());
+        claims.put("apogee_number", student.getApogeeNumber());
+        return createToken(claims, student.getEmail());
+    }
+
+    public String generateToken(Teacher teacher) {
+        Map<String, Object> claims = new HashMap<>();
+        // Add custom claims like role or user ID for easier access on the frontend
+        claims.put("teacher_id", teacher.getId());
+        return createToken(claims, teacher.getEmail());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {

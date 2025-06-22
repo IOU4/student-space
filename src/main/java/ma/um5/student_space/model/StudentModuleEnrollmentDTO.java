@@ -17,7 +17,7 @@ public class StudentModuleEnrollmentDTO {
 
     @NotNull
     @Size(max = 100)
-    private String studentUser;
+    private String student;
 
     @NotNull
     private Integer modulee;

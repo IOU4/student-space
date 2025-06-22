@@ -19,12 +19,12 @@ export class StudentModuleEnrollmentAddComponent implements OnInit {
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
 
-  studentUserValues?: Record<string,string>;
-  moduleeValues?: Map<number,string>;
+  students?: Record<string, string>;
+  modulees?: Map<number, string>;
 
   addForm = new FormGroup({
     enrollmentDate: new FormControl(null),
-    studentUser: new FormControl(null, [Validators.required]),
+    student: new FormControl(null, [Validators.required]),
     modulee: new FormControl(null, [Validators.required])
   }, { updateOn: 'submit' });
 
@@ -37,15 +37,15 @@ export class StudentModuleEnrollmentAddComponent implements OnInit {
 
   ngOnInit() {
     this.studentModuleEnrollmentService.getStudentUserValues()
-        .subscribe({
-          next: (data) => this.studentUserValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => this.students = data,
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
     this.studentModuleEnrollmentService.getModuleeValues()
-        .subscribe({
-          next: (data) => this.moduleeValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => this.modulees = data,
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
   handleSubmit() {
@@ -56,14 +56,14 @@ export class StudentModuleEnrollmentAddComponent implements OnInit {
     }
     const data = new StudentModuleEnrollmentDTO(this.addForm.value);
     this.studentModuleEnrollmentService.createStudentModuleEnrollment(data)
-        .subscribe({
-          next: () => this.router.navigate(['/studentModuleEnrollments'], {
-            state: {
-              msgSuccess: this.getMessage('created')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
-        });
+      .subscribe({
+        next: () => this.router.navigate(['/studentModuleEnrollments'], {
+          state: {
+            msgSuccess: this.getMessage('created')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
+      });
   }
 
 }

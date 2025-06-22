@@ -14,7 +14,7 @@
                 <th scope="col" class="text-left p-2" i18n="@@message.id.label">Id</th>
                 <th scope="col" class="text-left p-2" i18n="@@message.sentAt.label">Sent At</th>
                 <th scope="col" class="text-left p-2" i18n="@@message.modulee.label">Modulee</th>
-                <th scope="col" class="text-left p-2" i18n="@@message.senderUser.label">Sender User</th>
+                <th scope="col" class="text-left p-2" i18n="@@message.student.label">Student</th>
                 <th><!-- --></th>
             </tr>
         </thead>
@@ -24,7 +24,7 @@
                 <td class="p-2">{{ message.id }}</td>
                 <td class="p-2">{{ message.sentAt }}</td>
                 <td class="p-2">{{ message.modulee }}</td>
-                <td class="p-2">{{ message.senderUser }}</td>
+                <td class="p-2">{{ message.student}}</td>
                 <td class="p-2">
                     <div class="float-right whitespace-nowrap">
                         <a [routerLink]="['/messages/edit', message.id]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@message.list.edit">Edit</a>

@@ -2,7 +2,6 @@ package ma.um5.student_space.model;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.OffsetDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +21,11 @@ public class TeacherDTO {
     @Size(max = 255)
     private String specialty;
 
-    private OffsetDateTime createdAt;
+    @NotNull
+    private String email;
 
-    private Integer user;
+    @NotNull
+    private String password;
 
+    private String phoneNumber;
 }

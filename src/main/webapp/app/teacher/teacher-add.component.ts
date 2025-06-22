@@ -6,8 +6,6 @@ import { InputRowComponent } from 'app/common/input-row/input-row.component';
 import { TeacherService } from 'app/teacher/teacher.service';
 import { TeacherDTO } from 'app/teacher/teacher.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
-import { validOffsetDateTime } from 'app/common/utils';
-
 
 @Component({
   selector: 'app-teacher-add',
@@ -20,14 +18,13 @@ export class TeacherAddComponent implements OnInit {
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
 
-  userValues?: Map<number,string>;
-
   addForm = new FormGroup({
     firstName: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     lastName: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    email: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    password: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    phoneNumber: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     specialty: new FormControl(null, [Validators.maxLength(255)]),
-    createdAt: new FormControl(null, [validOffsetDateTime]),
-    user: new FormControl(null)
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
@@ -39,11 +36,6 @@ export class TeacherAddComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.teacherService.getUserValues()
-        .subscribe({
-          next: (data) => this.userValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
   }
 
   handleSubmit() {
@@ -54,14 +46,14 @@ export class TeacherAddComponent implements OnInit {
     }
     const data = new TeacherDTO(this.addForm.value);
     this.teacherService.createTeacher(data)
-        .subscribe({
-          next: () => this.router.navigate(['/teachers'], {
-            state: {
-              msgSuccess: this.getMessage('created')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
-        });
+      .subscribe({
+        next: () => this.router.navigate(['/teachers'], {
+          state: {
+            msgSuccess: this.getMessage('created')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
+      });
   }
 
 }

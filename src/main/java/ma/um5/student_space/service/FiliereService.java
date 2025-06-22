@@ -13,20 +13,15 @@ import ma.um5.student_space.util.ReferencedWarning;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class FiliereService {
 
     private final FiliereRepository filiereRepository;
     private final ModuleeRepository moduleeRepository;
     private final StudentRepository studentRepository;
-
-    public FiliereService(final FiliereRepository filiereRepository,
-            final ModuleeRepository moduleeRepository, final StudentRepository studentRepository) {
-        this.filiereRepository = filiereRepository;
-        this.moduleeRepository = moduleeRepository;
-        this.studentRepository = studentRepository;
-    }
 
     public List<FiliereDTO> findAll() {
         final List<Filiere> filieres = filiereRepository.findAll(Sort.by("id"));
@@ -63,7 +58,7 @@ public class FiliereService {
         filiereDTO.setName(filiere.getName());
         filiereDTO.setAcademicYear(filiere.getAcademicYear());
         filiereDTO.setDescription(filiere.getDescription());
-        filiereDTO.setCreatedAt(filiere.getCreatedAt());
+        filiereDTO.setSemester(filiere.getSemester());
         return filiereDTO;
     }
 
@@ -71,7 +66,7 @@ public class FiliereService {
         filiere.setName(filiereDTO.getName());
         filiere.setAcademicYear(filiereDTO.getAcademicYear());
         filiere.setDescription(filiereDTO.getDescription());
-        filiere.setCreatedAt(filiereDTO.getCreatedAt());
+        filiere.setSemester(filiereDTO.getSemester());
         return filiere;
     }
 

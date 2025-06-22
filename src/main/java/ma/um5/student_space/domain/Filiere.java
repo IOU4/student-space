@@ -43,11 +43,11 @@ public class Filiere {
     @Column(nullable = false, length = 20)
     private String academicYear;
 
+    @Column(nullable = false)
+    private String semester;
+
     @Column(columnDefinition = "text")
     private String description;
-
-    @Column
-    private OffsetDateTime createdAt;
 
     @OneToMany(mappedBy = "filiere")
     private Set<Modulee> filiereModules;

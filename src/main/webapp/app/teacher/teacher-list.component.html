@@ -13,9 +13,9 @@
             <tr>
                 <th scope="col" class="text-left p-2">Prénom</th>
                 <th scope="col" class="text-left p-2">Nom</th>
+                <th scope="col" class="text-left p-2">Email</th>
+                <th scope="col" class="text-left p-2">Telephone</th>
                 <th scope="col" class="text-left p-2">Spécialité</th>
-                <th scope="col" class="text-left p-2">Date de création</th>
-                <th scope="col" class="text-left p-2">Utilisateur</th>
                 <th><!-- --></th>
             </tr>
         </thead>
@@ -24,9 +24,9 @@
             <tr class="odd:bg-gray-100">
                 <td class="p-2">{{ teacher.firstName }}</td>
                 <td class="p-2">{{ teacher.lastName }}</td>
+                <td class="p-2">{{ teacher.email }}</td>
+                <td class="p-2">{{ teacher.phoneNumber }}</td>
                 <td class="p-2">{{ teacher.specialty }}</td>
-                <td class="p-2">{{ teacher.createdAt }}</td>
-                <td class="p-2">{{ teacher.user }}</td>
                 <td class="p-2">
                     <div class="float-right whitespace-nowrap">
                         <a [routerLink]="['/teachers/edit', teacher.firstName]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">Modifier</a>

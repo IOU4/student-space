@@ -19,8 +19,10 @@ import ma.um5.student_space.util.ReferencedWarning;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class ModuleeService {
 
     private final ModuleeRepository moduleeRepository;
@@ -29,18 +31,6 @@ public class ModuleeService {
     private final ExamRepository examRepository;
     private final MessageRepository messageRepository;
     private final StudentModuleEnrollmentRepository studentModuleEnrollmentRepository;
-
-    public ModuleeService(final ModuleeRepository moduleeRepository,
-            final FiliereRepository filiereRepository, final TeacherRepository teacherRepository,
-            final ExamRepository examRepository, final MessageRepository messageRepository,
-            final StudentModuleEnrollmentRepository studentModuleEnrollmentRepository) {
-        this.moduleeRepository = moduleeRepository;
-        this.filiereRepository = filiereRepository;
-        this.teacherRepository = teacherRepository;
-        this.examRepository = examRepository;
-        this.messageRepository = messageRepository;
-        this.studentModuleEnrollmentRepository = studentModuleEnrollmentRepository;
-    }
 
     public List<ModuleeDTO> findAll() {
         final List<Modulee> modulees = moduleeRepository.findAll(Sort.by("id"));
@@ -76,16 +66,14 @@ public class ModuleeService {
         moduleeDTO.setId(modulee.getId());
         moduleeDTO.setName(modulee.getName());
         moduleeDTO.setDescription(modulee.getDescription());
-        moduleeDTO.setCreatedAt(modulee.getCreatedAt());
         moduleeDTO.setFiliere(modulee.getFiliere() == null ? null : modulee.getFiliere().getId());
-        moduleeDTO.setTeacher(modulee.getTeacher() == null ? null : modulee.getTeacher().getFirstName());
+        moduleeDTO.setTeacher(modulee.getTeacher() == null ? null : modulee.getTeacher().getId());
         return moduleeDTO;
     }
 
     private Modulee mapToEntity(final ModuleeDTO moduleeDTO, final Modulee modulee) {
         modulee.setName(moduleeDTO.getName());
         modulee.setDescription(moduleeDTO.getDescription());
-        modulee.setCreatedAt(moduleeDTO.getCreatedAt());
         final Filiere filiere = moduleeDTO.getFiliere() == null ? null : filiereRepository.findById(moduleeDTO.getFiliere())
                 .orElseThrow(() -> new NotFoundException("filiere not found"));
         modulee.setFiliere(filiere);

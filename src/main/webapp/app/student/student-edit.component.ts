@@ -6,7 +6,7 @@ import { InputRowComponent } from 'app/common/input-row/input-row.component';
 import { StudentService } from 'app/student/student.service';
 import { StudentDTO } from 'app/student/student.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
-import { updateForm, validOffsetDateTime } from 'app/common/utils';
+import { updateForm } from 'app/common/utils';
 
 
 @Component({
@@ -21,16 +21,13 @@ export class StudentEditComponent implements OnInit {
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
 
-  userValues?: Map<number,string>;
-  filiereValues?: Map<number,string>;
+  filiereValues?: Map<number, string>;
   currentApogeeNumber?: string;
 
   editForm = new FormGroup({
     apogeeNumber: new FormControl({ value: null, disabled: true }),
     firstName: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     lastName: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-    createdAt: new FormControl(null, [validOffsetDateTime]),
-    user: new FormControl(null),
     filiere: new FormControl(null)
   }, { updateOn: 'submit' });
 
@@ -43,21 +40,16 @@ export class StudentEditComponent implements OnInit {
 
   ngOnInit() {
     this.currentApogeeNumber = this.route.snapshot.params['apogeeNumber'];
-    this.studentService.getUserValues()
-        .subscribe({
-          next: (data) => this.userValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
     this.studentService.getFiliereValues()
-        .subscribe({
-          next: (data) => this.filiereValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => this.filiereValues = data,
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
     this.studentService.getStudent(this.currentApogeeNumber!)
-        .subscribe({
-          next: (data) => updateForm(this.editForm, data),
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => updateForm(this.editForm, data),
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
   handleSubmit() {
@@ -68,14 +60,14 @@ export class StudentEditComponent implements OnInit {
     }
     const data = new StudentDTO(this.editForm.value);
     this.studentService.updateStudent(this.currentApogeeNumber!, data)
-        .subscribe({
-          next: () => this.router.navigate(['/students'], {
-            state: {
-              msgSuccess: this.getMessage('updated')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
-        });
+      .subscribe({
+        next: () => this.router.navigate(['/students'], {
+          state: {
+            msgSuccess: this.getMessage('updated')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
+      });
   }
 
 }

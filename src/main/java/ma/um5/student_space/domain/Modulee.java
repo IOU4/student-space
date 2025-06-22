@@ -46,9 +46,6 @@ public class Modulee {
     @Column(columnDefinition = "text")
     private String description;
 
-    @Column
-    private OffsetDateTime createdAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "filiere_id", nullable = false)
     private Filiere filiere;

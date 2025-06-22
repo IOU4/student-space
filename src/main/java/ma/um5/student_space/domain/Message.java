@@ -41,16 +41,17 @@ public class Message {
     @Column(nullable = false, columnDefinition = "text")
     private String content;
 
-    @Column
-    private OffsetDateTime sentAt;
+    private OffsetDateTime sentAt = OffsetDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modulee_id", nullable = false)
     private Modulee modulee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_user_id", nullable = false)
-    private User senderUser;
+    @Column(nullable = false)
+    private Boolean isTeacher;
+
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

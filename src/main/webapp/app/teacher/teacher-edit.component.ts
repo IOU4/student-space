@@ -6,7 +6,7 @@ import { InputRowComponent } from 'app/common/input-row/input-row.component';
 import { TeacherService } from 'app/teacher/teacher.service';
 import { TeacherDTO } from 'app/teacher/teacher.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
-import { updateForm, validOffsetDateTime } from 'app/common/utils';
+import { updateForm } from 'app/common/utils';
 
 
 @Component({
@@ -21,15 +21,12 @@ export class TeacherEditComponent implements OnInit {
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
 
-  userValues?: Map<number,string>;
   currentFirstName?: string;
 
   editForm = new FormGroup({
     firstName: new FormControl({ value: null, disabled: true }),
     lastName: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     specialty: new FormControl(null, [Validators.maxLength(255)]),
-    createdAt: new FormControl(null, [validOffsetDateTime]),
-    user: new FormControl(null)
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
@@ -41,16 +38,11 @@ export class TeacherEditComponent implements OnInit {
 
   ngOnInit() {
     this.currentFirstName = this.route.snapshot.params['firstName'];
-    this.teacherService.getUserValues()
-        .subscribe({
-          next: (data) => this.userValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
     this.teacherService.getTeacher(this.currentFirstName!)
-        .subscribe({
-          next: (data) => updateForm(this.editForm, data),
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => updateForm(this.editForm, data),
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
   handleSubmit() {
@@ -61,14 +53,14 @@ export class TeacherEditComponent implements OnInit {
     }
     const data = new TeacherDTO(this.editForm.value);
     this.teacherService.updateTeacher(this.currentFirstName!, data)
-        .subscribe({
-          next: () => this.router.navigate(['/teachers'], {
-            state: {
-              msgSuccess: this.getMessage('updated')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
-        });
+      .subscribe({
+        next: () => this.router.navigate(['/teachers'], {
+          state: {
+            msgSuccess: this.getMessage('updated')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
+      });
   }
 
 }

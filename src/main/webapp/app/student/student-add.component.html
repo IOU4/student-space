@@ -8,8 +8,8 @@
     <app-input-row [group]="addForm" field="apogeeNumber" i18n-label="@@student.apogeeNumber.label" label="Apogee Number" />
     <app-input-row [group]="addForm" field="firstName" i18n-label="@@student.firstName.label" label="First Name" />
     <app-input-row [group]="addForm" field="lastName" i18n-label="@@student.lastName.label" label="Last Name" />
-    <app-input-row [group]="addForm" field="createdAt" i18n-label="@@student.createdAt.label" label="Created At" />
-    <app-input-row [group]="addForm" field="user" rowType="select" [options]="userValues" i18n-label="@@student.user.label" label="User" />
+    <app-input-row [group]="addForm" field="email" i18n-label="@@student.email.label" label="Email" />
+    <app-input-row [group]="addForm" field="password" rowType="password" i18n-label="@@student.password.label" label="Password" />
     <app-input-row [group]="addForm" field="filiere" rowType="select" [options]="filiereValues" i18n-label="@@student.filiere.label" label="Filiere" />
     <input type="submit" i18n-value="@@student.add.headline" value="Add Student" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
 </form>

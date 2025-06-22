@@ -1,16 +1,7 @@
 package ma.um5.student_space.rest;
 
-import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Map;
-import ma.um5.student_space.domain.User;
-import ma.um5.student_space.model.TeacherDTO;
-import ma.um5.student_space.repos.UserRepository;
-import ma.um5.student_space.service.TeacherService;
-import ma.um5.student_space.util.CustomCollectors;
-import ma.um5.student_space.util.ReferencedException;
-import ma.um5.student_space.util.ReferencedWarning;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,29 +14,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import ma.um5.student_space.model.TeacherDTO;
+import ma.um5.student_space.service.TeacherService;
+import ma.um5.student_space.util.ReferencedException;
+import ma.um5.student_space.util.ReferencedWarning;
+
 
 @RestController
 @RequestMapping(value = "/api/teachers", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 public class TeacherResource {
 
     private final TeacherService teacherService;
-    private final UserRepository userRepository;
-
-    public TeacherResource(final TeacherService teacherService,
-            final UserRepository userRepository) {
-        this.teacherService = teacherService;
-        this.userRepository = userRepository;
-    }
 
     @GetMapping
     public ResponseEntity<List<TeacherDTO>> getAllTeachers() {
         return ResponseEntity.ok(teacherService.findAll());
     }
 
-    @GetMapping("/{firstName}")
+    @GetMapping("/{ID}")
     public ResponseEntity<TeacherDTO> getTeacher(
-            @PathVariable(name = "firstName") final String firstName) {
-        return ResponseEntity.ok(teacherService.get(firstName));
+            @PathVariable(name = "ID") final Integer teacherId) {
+        return ResponseEntity.ok(teacherService.get(teacherId));
     }
 
     @PostMapping
@@ -54,30 +46,23 @@ public class TeacherResource {
         return new ResponseEntity<>('"' + createdFirstName + '"', HttpStatus.CREATED);
     }
 
-    @PutMapping("/{firstName}")
+    @PutMapping("/{ID}")
     public ResponseEntity<String> updateTeacher(
-            @PathVariable(name = "firstName") final String firstName,
+            @PathVariable(name = "ID") final Integer teacherId,
             @RequestBody @Valid final TeacherDTO teacherDTO) {
-        teacherService.update(firstName, teacherDTO);
-        return ResponseEntity.ok('"' + firstName + '"');
+        teacherService.update(teacherId, teacherDTO);
+        return ResponseEntity.ok('"' + teacherId.toString() + '"');
     }
 
-    @DeleteMapping("/{firstName}")
+    @DeleteMapping("/{ID}")
     public ResponseEntity<Void> deleteTeacher(
-            @PathVariable(name = "firstName") final String firstName) {
-        final ReferencedWarning referencedWarning = teacherService.getReferencedWarning(firstName);
+            @PathVariable(name = "ID") final Integer teacherId) {
+        final ReferencedWarning referencedWarning = teacherService.getReferencedWarning(teacherId);
         if (referencedWarning != null) {
             throw new ReferencedException(referencedWarning);
         }
-        teacherService.delete(firstName);
+        teacherService.delete(teacherId);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/userValues")
-    public ResponseEntity<Map<Integer, String>> getUserValues() {
-        return ResponseEntity.ok(userRepository.findAll(Sort.by("id"))
-                .stream()
-                .collect(CustomCollectors.toSortedMap(User::getId, User::getEmail)));
     }
 
 }

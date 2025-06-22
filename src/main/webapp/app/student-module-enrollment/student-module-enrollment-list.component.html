@@ -12,9 +12,9 @@
         <thead>
             <tr>
                 <th scope="col" class="text-left p-2">Id</th>
-                <th scope="col" class="text-left p-2">Date d'inscription</th>
                 <th scope="col" class="text-left p-2">Étudiant</th>
                 <th scope="col" class="text-left p-2">Module</th>
+                <th scope="col" class="text-left p-2">Date d'inscription</th>
                 <th><!-- --></th>
             </tr>
         </thead>
@@ -22,9 +22,9 @@
             @for (studentModuleEnrollment of studentModuleEnrollments; track studentModuleEnrollment.id) {
             <tr class="odd:bg-gray-100">
                 <td class="p-2">{{ studentModuleEnrollment.id }}</td>
-                <td class="p-2">{{ studentModuleEnrollment.enrollmentDate }}</td>
-                <td class="p-2">{{ studentModuleEnrollment.studentUser }}</td>
+                <td class="p-2">{{ studentModuleEnrollment.student}}</td>
                 <td class="p-2">{{ studentModuleEnrollment.modulee }}</td>
+                <td class="p-2">{{ studentModuleEnrollment.enrollmentDate }}</td>
                 <td class="p-2">
                     <div class="float-right whitespace-nowrap">
                         <a [routerLink]="['/studentModuleEnrollments/edit', studentModuleEnrollment.id]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">Modifier</a>

@@ -82,10 +82,10 @@ public class ModuleeResource {
     }
 
     @GetMapping("/teacherValues")
-    public ResponseEntity<Map<String, String>> getTeacherValues() {
+    public ResponseEntity<Map<Integer, String>> getTeacherValues() {
         return ResponseEntity.ok(teacherRepository.findAll(Sort.by("firstName"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(Teacher::getFirstName, Teacher::getLastName)));
+                .collect(CustomCollectors.toSortedMap(Teacher::getId, Teacher::getLastName)));
     }
 
 }

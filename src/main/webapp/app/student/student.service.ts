@@ -34,14 +34,9 @@ export class StudentService {
     return this.http.delete(this.resourcePath + '/' + apogeeNumber);
   }
 
-  getUserValues() {
-    return this.http.get<Record<string, string>>(this.resourcePath + '/userValues')
-        .pipe(map(transformRecordToMap));
-  }
-
   getFiliereValues() {
     return this.http.get<Record<string, string>>(this.resourcePath + '/filiereValues')
-        .pipe(map(transformRecordToMap));
+      .pipe(map(transformRecordToMap));
   }
 
 }

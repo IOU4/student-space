@@ -6,7 +6,7 @@ import { InputRowComponent } from 'app/common/input-row/input-row.component';
 import { ModuleeService } from 'app/modulee/modulee.service';
 import { ModuleeDTO } from 'app/modulee/modulee.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
-import { updateForm, validOffsetDateTime } from 'app/common/utils';
+import { updateForm } from 'app/common/utils';
 
 
 @Component({
@@ -21,15 +21,14 @@ export class ModuleeEditComponent implements OnInit {
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
 
-  filiereValues?: Map<number,string>;
-  teacherValues?: Record<string,string>;
+  filiereValues?: Map<number, string>;
+  teacherValues?: Record<string, string>;
   currentId?: number;
 
   editForm = new FormGroup({
     id: new FormControl({ value: null, disabled: true }),
     name: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
     description: new FormControl(null),
-    createdAt: new FormControl(null, [validOffsetDateTime]),
     filiere: new FormControl(null, [Validators.required]),
     teacher: new FormControl(null)
   }, { updateOn: 'submit' });
@@ -44,20 +43,20 @@ export class ModuleeEditComponent implements OnInit {
   ngOnInit() {
     this.currentId = +this.route.snapshot.params['id'];
     this.moduleeService.getFiliereValues()
-        .subscribe({
-          next: (data) => this.filiereValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => this.filiereValues = data,
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
     this.moduleeService.getTeacherValues()
-        .subscribe({
-          next: (data) => this.teacherValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => this.teacherValues = data,
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
     this.moduleeService.getModulee(this.currentId!)
-        .subscribe({
-          next: (data) => updateForm(this.editForm, data),
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+      .subscribe({
+        next: (data) => updateForm(this.editForm, data),
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
   handleSubmit() {
@@ -68,14 +67,14 @@ export class ModuleeEditComponent implements OnInit {
     }
     const data = new ModuleeDTO(this.editForm.value);
     this.moduleeService.updateModulee(this.currentId!, data)
-        .subscribe({
-          next: () => this.router.navigate(['/modulees'], {
-            state: {
-              msgSuccess: this.getMessage('updated')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
-        });
+      .subscribe({
+        next: () => this.router.navigate(['/modulees'], {
+          state: {
+            msgSuccess: this.getMessage('updated')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
+      });
   }
 
 }

@@ -4,34 +4,25 @@ import java.util.List;
 import ma.um5.student_space.domain.Filiere;
 import ma.um5.student_space.domain.Student;
 import ma.um5.student_space.domain.StudentModuleEnrollment;
-import ma.um5.student_space.domain.User;
 import ma.um5.student_space.model.StudentDTO;
 import ma.um5.student_space.repos.FiliereRepository;
 import ma.um5.student_space.repos.StudentModuleEnrollmentRepository;
 import ma.um5.student_space.repos.StudentRepository;
-import ma.um5.student_space.repos.UserRepository;
 import ma.um5.student_space.util.NotFoundException;
 import ma.um5.student_space.util.ReferencedWarning;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 
 @Service
+@RequiredArgsConstructor
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final UserRepository userRepository;
     private final FiliereRepository filiereRepository;
     private final StudentModuleEnrollmentRepository studentModuleEnrollmentRepository;
-
-    public StudentService(final StudentRepository studentRepository,
-            final UserRepository userRepository, final FiliereRepository filiereRepository,
-            final StudentModuleEnrollmentRepository studentModuleEnrollmentRepository) {
-        this.studentRepository = studentRepository;
-        this.userRepository = userRepository;
-        this.filiereRepository = filiereRepository;
-        this.studentModuleEnrollmentRepository = studentModuleEnrollmentRepository;
-    }
 
     public List<StudentDTO> findAll() {
         final List<Student> students = studentRepository.findAll(Sort.by("apogeeNumber"));
@@ -68,22 +59,20 @@ public class StudentService {
         studentDTO.setApogeeNumber(student.getApogeeNumber());
         studentDTO.setFirstName(student.getFirstName());
         studentDTO.setLastName(student.getLastName());
-        studentDTO.setCreatedAt(student.getCreatedAt());
-        studentDTO.setUser(student.getUser() == null ? null : student.getUser().getId());
+        studentDTO.setEmail(student.getEmail());
         studentDTO.setFiliere(student.getFiliere() == null ? null : student.getFiliere().getId());
+        studentDTO.setPassword(student.getPasswordHash());
         return studentDTO;
     }
 
     private Student mapToEntity(final StudentDTO studentDTO, final Student student) {
         student.setFirstName(studentDTO.getFirstName());
         student.setLastName(studentDTO.getLastName());
-        student.setCreatedAt(studentDTO.getCreatedAt());
-        final User user = studentDTO.getUser() == null ? null : userRepository.findById(studentDTO.getUser())
-                .orElseThrow(() -> new NotFoundException("user not found"));
-        student.setUser(user);
         final Filiere filiere = studentDTO.getFiliere() == null ? null : filiereRepository.findById(studentDTO.getFiliere())
                 .orElseThrow(() -> new NotFoundException("filiere not found"));
         student.setFiliere(filiere);
+        student.setEmail(studentDTO.getEmail());
+        student.setPasswordHash(studentDTO.getPassword());
         return student;
     }
 
@@ -95,7 +84,7 @@ public class StudentService {
         final ReferencedWarning referencedWarning = new ReferencedWarning();
         final Student student = studentRepository.findById(apogeeNumber)
                 .orElseThrow(NotFoundException::new);
-        final StudentModuleEnrollment studentUserStudentModuleEnrollment = studentModuleEnrollmentRepository.findFirstByStudentUser(student);
+        final StudentModuleEnrollment studentUserStudentModuleEnrollment = studentModuleEnrollmentRepository.findFirstByStudent(student);
         if (studentUserStudentModuleEnrollment != null) {
             referencedWarning.setKey("student.studentModuleEnrollment.studentUser.referenced");
             referencedWarning.addParam(studentUserStudentModuleEnrollment.getId());

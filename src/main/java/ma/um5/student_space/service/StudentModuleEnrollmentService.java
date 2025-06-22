@@ -12,21 +12,16 @@ import ma.um5.student_space.util.NotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 
 @Service
+@RequiredArgsConstructor
 public class StudentModuleEnrollmentService {
 
     private final StudentModuleEnrollmentRepository studentModuleEnrollmentRepository;
     private final StudentRepository studentRepository;
     private final ModuleeRepository moduleeRepository;
-
-    public StudentModuleEnrollmentService(
-            final StudentModuleEnrollmentRepository studentModuleEnrollmentRepository,
-            final StudentRepository studentRepository, final ModuleeRepository moduleeRepository) {
-        this.studentModuleEnrollmentRepository = studentModuleEnrollmentRepository;
-        this.studentRepository = studentRepository;
-        this.moduleeRepository = moduleeRepository;
-    }
 
     public List<StudentModuleEnrollmentDTO> findAll() {
         final List<StudentModuleEnrollment> studentModuleEnrollments = studentModuleEnrollmentRepository.findAll(Sort.by("id"));
@@ -63,7 +58,7 @@ public class StudentModuleEnrollmentService {
             final StudentModuleEnrollmentDTO studentModuleEnrollmentDTO) {
         studentModuleEnrollmentDTO.setId(studentModuleEnrollment.getId());
         studentModuleEnrollmentDTO.setEnrollmentDate(studentModuleEnrollment.getEnrollmentDate());
-        studentModuleEnrollmentDTO.setStudentUser(studentModuleEnrollment.getStudentUser() == null ? null : studentModuleEnrollment.getStudentUser().getApogeeNumber());
+        studentModuleEnrollmentDTO.setStudent(studentModuleEnrollment.getStudent() == null ? null : studentModuleEnrollment.getStudent().getApogeeNumber());
         studentModuleEnrollmentDTO.setModulee(studentModuleEnrollment.getModulee() == null ? null : studentModuleEnrollment.getModulee().getId());
         return studentModuleEnrollmentDTO;
     }
@@ -72,9 +67,9 @@ public class StudentModuleEnrollmentService {
             final StudentModuleEnrollmentDTO studentModuleEnrollmentDTO,
             final StudentModuleEnrollment studentModuleEnrollment) {
         studentModuleEnrollment.setEnrollmentDate(studentModuleEnrollmentDTO.getEnrollmentDate());
-        final Student studentUser = studentModuleEnrollmentDTO.getStudentUser() == null ? null : studentRepository.findById(studentModuleEnrollmentDTO.getStudentUser())
+        final Student studentUser = studentModuleEnrollmentDTO.getStudent() == null ? null : studentRepository.findById(studentModuleEnrollmentDTO.getStudent())
                 .orElseThrow(() -> new NotFoundException("studentUser not found"));
-        studentModuleEnrollment.setStudentUser(studentUser);
+        studentModuleEnrollment.setStudent(studentUser);
         final Modulee modulee = studentModuleEnrollmentDTO.getModulee() == null ? null : moduleeRepository.findById(studentModuleEnrollmentDTO.getModulee())
                 .orElseThrow(() -> new NotFoundException("modulee not found"));
         studentModuleEnrollment.setModulee(modulee);
